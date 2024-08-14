@@ -1,0 +1,73 @@
+---
+title: "UNICEF Database Manager Assessment"
+format: pdf
+editor: visual
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+
+```{r wd set up, include=FALSE}
+#the wd needs to be customized to local path in order reproduce the text 
+wd = "~/Documents/GitHub/unf_db_test"
+
+```
+
+```{r source files, include=FALSE}
+source(file.path(wd,         "user_profile.R"))
+source(file.path(rCodes,     "00_user_functions.R"))
+source(file.path(codesTask1, "0101_data_prep.R"))
+source(file.path(codesTask1, "0102_data_analysis.R"))
+source(file.path(codesTask1, "0103_data_vis.R"))
+```
+
+# Task 1: Maternal and Child Health Indicators Analysis
+
+#### Your task is to calculate population-weighted coverage of health services (antenatal care and skilled birth attendance) for countries categorized as on-track and off-track in achieving under-5 mortality targets as of 2023.
+
+The bar chart provides a snapshot of the relationship between maternal health indicators, specifically Skilled Birth Attendant and Antenatal Care (4+ visits) for women aged 15-49 years worldwide, based on household survey data from 2018-2022. It displays population-weighted averages for these indicators according to the SDG progress status of Under-5 Mortality Rate (U5MR), categorized as "Achieved," "On Track," and "Acceleration Needed." The findings suggest an association between maternal health indicators and U5MR status. However, these relationships are not statistically significant everywhere. Overall, the pattern indicates that countries with higher rates of skilled birth attendants and antenatal care visits tend to have lower U5MR rates. Specifically, countries that have achieved under-five mortality targets exhibit significantly higher rates of skilled birth attendance and antenatal care. While this analysis does not allow for causal claims, it does suggest that maternal health indicators play a crucial role in achieving under-five mortality targets.
+
+The particular focus of this task is the distinction between the "Acceleration Needed" (off track) and "On Track" categories. For the "Antenatal Care 4+ visits" indicator, countries in the "On Track" category (56.5%) exhibit slightly higher coverage than those in the "Acceleration Needed" category (54.4%), but the difference is not significant, as the confidence intervals overlap.
+
+In contrast, a different pattern emerges with the "Skilled Birth Attendant" indicator. Countries that are "On Track" have a mean coverage of 85.7%, while those requiring "Acceleration" lag behind at 63.8%. Since the confidence intervals do not overlap, these differences are statistically significant. This suggests that the "Skilled Birth Attendant" indicator is more closely related to achieving the U5MR target than the "Antenatal Care 4+ visits" indicator. However, as mentioned earlier, further research is needed to establish a causal relationship between these indicators and U5MR to make well-grounded policy recommendations.
+
+```{r task1_plot, echo=FALSE, fig.cap="Mean Values by Indicator and U5MR Status with Error Bars"}
+
+task1_plot
+
+```
+
+# Task 2. Early Childhood Development Index (ECDI) Analysis
+
+#### Your task is to produce a Data Perspective on the evolution of education for 4- to 5-year-old children. Particularly interesting for the Perspective is understanding how educational performance evolves month by month at these critical ages, considering both general education and specific subjects (e.g., literature and math, physical education). Methods should be sound and well-argued if necessary.
+
+```{r task2_code, echo=FALSE}
+
+source(file.path(codesTask2, "0201_data_prep.R"))
+source(file.path(codesTask2, "0202_data_analysis.R"))
+
+```
+The variables outlined in the task for Zimbabwe MICS 2019 represent the old, not revised measure of Early Childhood Development Index (ECDI). The ECDI is a composite index that measures the development of children aged 36-59 months in four key domains: literacy-numeracy, physical, socio-emotional, and learning. The ECDI is calculated based on the presence or absence of specific skills in each domain. The ECDI is a binary variable, with a value of 1 indicating that a child has reached the expected level of development in all four domains, and 0 indicating that they have not. However, recently ECDI has been replaced by ECDI 2030, a new measure with quite a different methodology. While the features of the new measure are beyond the scope of this assessment, I will focus on producing the ECDI based on the old methodology and present it's main findings in accordance with the outlined task. 
+
+### How Many Children Achieved the Expected Level of Development?
+
+Below are the findings of the ECDI and its key components for Zimbabwe MICS 2019:
+```{r task2 prevalence, echo=FALSE}
+
+ecdi_desc_table
+
+
+```
+The estimates are unweighted as the weights were not provided in the dataset. It can be seen that the overall percentage of children developmentally on track accounts for 71%. The value matches the MICS Survey Findings Report. While the highest share of population is on track in physical development (96%), the lowest share of those on track refers to literacy and numeracy and accounts for only 10%. 
+
+### Correlation of index and its subcomponents
+
+We wanna measure how the final score of ECDI correlates with its subcomponents. Since all the measures are binary, we used Phi coefficient to measure the correlations as this method suits best for dichotomous measures. 
+
+```{r task2_corr, echo=FALSE, fig.cap="Corelation Matrix of ECDI and subcomponents"}
+
+cor_plot_ecdi
+
+```

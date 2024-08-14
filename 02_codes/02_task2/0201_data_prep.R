@@ -36,14 +36,20 @@ zwe_mics <-
   # drop_na(age_in_months) %>%
   # create ecdi subcomponent and scores following the established methodology
   mutate(
-    lit_num = ifelse(EC6 + EC7 + EC8 %in% c(2, 3), 1, 0),
-    physical = ifelse(EC9 == 1 | EC10 == 1, 1, 0),
-    socio_emot = ifelse(EC13 + EC14 + EC15 %in% c(2, 3), 1, 0),
-    learn = ifelse(EC11 == 1 | EC12 == 1, 1, 0),
-    ecdi = ifelse(lit_num + physical + socio_emot + learn %in% c(3, 4), 1, 0)
+    literacy = case_when(EC6 + EC7 == 2 ~ 1, TRUE ~ 0),
+    numeracy = case_when(EC8 == 1 ~ 1, TRUE ~ 0),
+    # lit_num = case_when( (literacy + numeracy) %in% c(1, 2) ~ 1, TRUE ~ 0),
+    lit_num = case_when( (EC6 + EC7 + EC8) %in% c(2, 3) ~ 1, TRUE ~ 0),
+    physical = case_when(EC9 == 1 | EC10 == 1  ~ 1, TRUE ~ 0),
+    socio_emot = case_when((EC13 + EC14 + EC15) %in% c(2, 3) ~ 1, TRUE ~ 0),
+    learn = case_when(EC11 == 1 | EC12 == 1 ~ 1, TRUE ~ 0),
+    ecdi = case_when((lit_num + physical + socio_emot + learn) %in% c(3, 4) ~ 1, TRUE ~ 0)
   )
   
 # View(zwe_mics)
+
+# summary(zwe_mics$lit_num)
+# summary(zwe_mics$ecdi)
 
 # write down a prepared file
 write_csv(zwe_mics, file.path(output, "task2_master_data.csv"))

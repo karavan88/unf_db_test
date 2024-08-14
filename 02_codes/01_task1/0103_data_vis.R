@@ -19,7 +19,7 @@ t1_aggr <-
 
 
 # Plotting 
-p <-
+task1_plot <-
   ggplot(t1_aggr, aes(x = Status.U5MR, y = mean, fill = Status.U5MR)) +
   geom_bar(stat = "identity", position = "dodge") +
   geom_errorbar(aes(ymin = mean_low, ymax = mean_upp), width = 0.2, position = position_dodge(0.9)) +
@@ -30,6 +30,5 @@ p <-
     y = "Mean Value"
   ) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-ggplotly(p)
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none")
