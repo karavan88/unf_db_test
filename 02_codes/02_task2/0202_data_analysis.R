@@ -184,7 +184,7 @@ model_outputs <- model_outputs %>%
 
 
 # Create a gt table
-gt_table <- 
+gt_glm_table <- 
   model_outputs %>%
   gt() %>%
   tab_header(
