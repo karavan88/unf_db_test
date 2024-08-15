@@ -24,6 +24,19 @@ The repository is organized into the following directories:
 -   **Key Script**:
     -   `00_user_functions.R`: This script contains essential libraries and user-defined functions that are required for executing the analysis scripts in `01_task1/` and `02_task2/`.
 
+### 4. `03_output_data/`
+
+-   **Purpose**: This directory contains all the data files produced based on the input data files and as a result of the scripts in `02_codes/`.
+
+### 5. Main Directory
+
+-   **Contents**: The main directory includes essential files and scripts necessary for setting up and executing the project:
+    -   **Rproj File**: The R project file (`.Rproj`) helps in managing the project within RStudio, ensuring that the working directory is set correctly and the project environment is consistent.
+    -   **QMD File**: The Quarto markdown (`.qmd`) file is used to generate the final report. This file sources various scripts and produces a PDF document as the final output.
+    -   **PDF File**: This is the generated report based on the Quarto file, which includes all the analysis, visualizations, and results from the assessment.
+    -   **user_profile.R Script**: This script sets up the user environment by configuring directory paths based on the user's profile. It must be manually updated with the correct username for the paths to work properly.
+    -   **Final PDF Output**: The final output of the assessment, generated from the QMD file, which contains all the results and documentation from the analysis.
+
 ## Setup Instructions
 
 To run the scripts successfully, follow these steps:
@@ -33,6 +46,10 @@ To run the scripts successfully, follow these steps:
     -   **Important**: You must manually update the `user_profile.R` script with your username for the directory paths to be correctly configured.
 2.  **Execution**:
     -   Once the user profile is set up, you can proceed to execute the scripts in `02_codes/`. Ensure that the required input data is available in the `01_input_data/` directory.
+3.  **Running the Quarto File**:
+    -   The `.qmd` file in the main directory is used to generate the final report in PDF format. To execute this file, ensure that [Quarto](https://quarto.org/) is installed. In the latest versions of RStudio, Quarto is installed by default.
+    -   To generate the report, open the `.qmd` file in RStudio and render it by clicking the "Render" button or by running the following command in the R console: `r     quarto::quarto_render("filename.qmd")`
+    -   This will produce a PDF document that includes all the analyses and results.
 
 ## License
 
