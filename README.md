@@ -35,6 +35,7 @@ The repository is organized into the following directories:
     -   **QMD File**: The Quarto markdown (`.qmd`) file is used to generate the final report. This file sources various scripts and produces a PDF document as the final output.
     -   **PDF File**: This is the generated report based on the Quarto file, which includes all the analysis, visualizations, and results from the assessment.
     -   **user_profile.R Script**: This script sets up the user environment by configuring directory paths based on the user's profile. It must be manually updated with the correct username for the paths to work properly.
+    -   **run_project.R Script**: This script executes the analysis by sourcing the necessary scripts in `02_codes/` and generating the final report in PDF format.
     -   **Final PDF Output**: The final output of the assessment, generated from the QMD file, which contains all the results and documentation from the analysis.
 
 ## Setup Instructions
