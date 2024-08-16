@@ -18,9 +18,14 @@ USER        <- Sys.getenv("USER")
 # Set up the project folder
 
 # This is for Windows users
+
 #if (USERNAME == " <insert your user name here> ") {
+  
   # Please insert here the path to the project folder - below is the example
   # projectFolder  <- file.path(Sys.getenv("USERPROFILE"), "Documents/GitHub/P3_Assessment")
+  
+  # !!! or just set up by getting a working directory
+  # projectFolder  <- getwd()
   
 #} 
 

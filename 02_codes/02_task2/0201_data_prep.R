@@ -7,7 +7,7 @@
 ### !!! BEFORE EXECUTING THIS FILE, PLEASE READ USER PROFILE STORED IN THE MAIN REPOSITORY  ###
 
 # this command reads the file for you in case if the user profile has been already set
-source("user_profile.R")
+# source("user_profile.R")
 
 # Now we need to install the packages needed to carry out the work
 source(file.path(rCodes, "00_user_functions.R"))
@@ -44,12 +44,23 @@ zwe_mics <-
     socio_emot = case_when((EC13 + EC14 + EC15) %in% c(2, 3) ~ 1, TRUE ~ 0),
     learn = case_when(EC11 == 1 | EC12 == 1 ~ 1, TRUE ~ 0),
     ecdi = case_when((lit_num + physical + socio_emot + learn) %in% c(3, 4) ~ 1, TRUE ~ 0)
-  )
+  ) %>%
+  # produce the alternative version of the index that is based on simple averages
+  rowwise() %>%
+  mutate(
+    lit_num.alt = mean(c_across(c(EC6, EC7, EC8)), na.rm = TRUE),
+    physical.alt = mean(c_across(c(EC9, EC10)), na.rm = TRUE),
+    socio_emot.alt = mean(c_across(c(EC13, EC14, EC15)), na.rm = TRUE),
+    learn.alt = mean(c_across(c(EC11, EC12)), na.rm = TRUE),
+    ecdi.alt = mean(c_across(c(lit_num.alt, physical.alt, socio_emot.alt, learn.alt)), na.rm = TRUE)
+  ) %>%
+  ungroup()  # Ensure to ungroup after row-wise operations
   
 # View(zwe_mics)
 
 # summary(zwe_mics$lit_num)
 # summary(zwe_mics$ecdi)
+# summary(zwe_mics$ecdi.alt)
 
 # write down a prepared file
 write_csv(zwe_mics, file.path(output, "task2_master_data.csv"))

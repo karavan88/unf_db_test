@@ -45,10 +45,13 @@ To run the scripts successfully, follow these steps:
     -   Before running any scripts, you need to execute the `user_profile.R` script located in the main directory. This script sets up the user profile, including all necessary directories and environment settings.
     -   **Important**: You must manually update the `user_profile.R` script with your username for the directory paths to be correctly configured.
 2.  **Execution**:
-    -   Once the user profile is set up, you can proceed to execute the scripts in `02_codes/`. Ensure that the required input data is available in the `01_input_data/` directory.
+    -   Once the user profile is set up, you can proceed to execute the scripts in `run_project.R`. The last command of the script generates the final report in PDF format. You need to make sure that you have latex installed.
+    -   Alternatively, you can proceed to execute the scripts in `02_codes/` and run them sequantially with the proposed numbering.
+    -   Please make sure gt package in R, used to generate tables, works well and can be installed into your environment. The `user_functions.R` script installs it automatically, but different operation systems may require different configurations to make it work properly.
 3.  **Running the Quarto File**:
+    -   The `run_project.R` allows you to generate the final PDF report. However, you can also have the same output by running `.qmd` file in RStudio. In order to run it in VSCode or other IDE, make sure you have Quarto installed in your environment.
     -   The `.qmd` file in the main directory is used to generate the final report in PDF format. To execute this file, ensure that [Quarto](https://quarto.org/) is installed. In the latest versions of RStudio, Quarto is installed by default.
-    -   To generate the report, open the `.qmd` file in RStudio and render it by clicking the "Render" button or by running the following command in the R console: `r     quarto::quarto_render("filename.qmd")`
+    -   To generate the report, open the `.qmd` file in RStudio and render it by clicking the "Render" button or by running the following command in the R console: `quarto::quarto_render("test_results.qmd")`
     -   This will produce a PDF document that includes all the analyses and results.
 
 ## License

@@ -8,10 +8,10 @@ editor: visual
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
-
 ```{r wd set up, include=FALSE}
-#the wd needs to be customized to local path in order reproduce the text 
-wd = "~/Documents/GitHub/unf_db_test"
+# !!! THE WD NEEDS TO BE CUSTOMIZED TO LOCAL PATH IN ORDER REPRODUCE THE TEXT 
+#wd = "~/Documents/GitHub/unf_db_test"
+wd = getwd()
 
 ```
 
@@ -49,62 +49,80 @@ source(file.path(codesTask2, "0201_data_prep.R"))
 source(file.path(codesTask2, "0202_data_analysis.R"))
 
 ```
-The variables outlined in the task for Zimbabwe MICS 2019 represent the old, not revised measure of Early Childhood Development Index (ECDI). The ECDI is a composite index that measures the development of children aged 36-59 months in four key domains: literacy-numeracy, physical, socio-emotional, and learning. The ECDI is calculated based on the presence or absence of specific skills in each domain. The ECDI is a binary variable, with a value of 1 indicating that a child has reached the expected level of development in all four domains, and 0 indicating that they have not. However, recently ECDI has been replaced by ECDI 2030, a new measure with quite a different methodology. While the features of the new measure are beyond the scope of this assessment, I will focus on producing the ECDI based on the old methodology and present it's main findings in accordance with the outlined task. 
+
+The variables outlined in the task for the Zimbabwe MICS 2019 represent the older, unrevised measure of the Early Childhood Development Index (ECDI). The ECDI is a composite index that assesses the development of children aged 36-59 months across four key domains: literacy-numeracy, physical, socio-emotional, and learning. The ECDI is calculated based on the presence or absence of specific skills in each domain. It is a binary variable, where a value of 1 indicates that a child has reached the expected level of development in all four domains, and a value of 0 indicates that they have not.
+
+However, as per the instructions for this task (outlined in README.html), the suggested approach to aggregating the index is not based on creating binary outcomes for each domain. Instead, it involves calculating a continuous index using the arithmetic mean.
+
+Additionally, the ECDI has recently been replaced by ECDI 2030, a new measure with a significantly different methodology. While the details of the new measure are beyond the scope of this assessment, I will focus on producing the ECDI based on the methodology proposed in the assignment and present its main findings as outlined in the task.
 
 ### How Many Children Achieved the Expected Level of Development?
 
 Below are the findings of the ECDI and its key components for Zimbabwe MICS 2019:
+
 ```{r task2 prevalence, echo=FALSE}
 
 ecdi_desc_table
 
 
 ```
-The estimates are unweighted as the weights were not provided in the dataset. It can be seen that the overall percentage of children developmentally on track accounts for 71%. The value matches the MICS Survey Findings Report. While the highest share of population is on track in physical development (96%), the lowest share of those on track refers to literacy and numeracy and accounts for only 10%. 
 
-### Correlation of index and its subcomponents
+The estimates are unweighted, as the dataset did not provide weights. It is observed that 60% of children are developmentally on track overall. (Using the official methodology, this figure is 71%, which aligns with the MICS Survey Findings Report—codes for this calculation are not presented here but can be found in the respective scripts.) While the highest percentage of children are on track in learning (80%), the lowest percentage pertains to literacy and numeracy, with only 13% on track. Interestingly, the official index showed the highest values for the physical domain, with around 90% of children in the country being on track in terms of their physical development.
 
-We wanna measure how the final score of ECDI correlates with its subcomponents. Since all the measures are binary, we used Phi coefficient to measure the correlations as this method suits best for dichotomous measures. The correlation matrix below shows weak correlations with literacy/numeracy domain (0.21) and physical domain (0.31), and moderate correlations with learning (0.48) domains. However, the most problematic domain is socio-emotional, which has a strong positive correlation with the ECDI (0.77). While detailed psychometric analysis is beyond the scope of this work, it suggests that socio-emotional domain is the major driver of the ECDI score in Zimbabwe. Ideally, no index should express the strong  correlation between the domains and finakl score, as it 1) may indicate that the index is not a composite measure but rather a measure of a single domain 2) the domains are not fully independent from each other. 
+### Psychometric properties (reliability analysis)
 
-```{r task2_corr, echo=FALSE, fig.cap="Corelation Matrix of ECDI and subcomponents"}
+We wanna measure how the final score of ECDI relates with its subcomponents by carrying out reliability analysis using Cronbach Alpha. Below is the output of the reliability analysis:
 
-cor_plot_ecdi
+```{r task2_alpha, echo=FALSE}
+
+
+alpha_result
 
 ```
 
+The overall standardized Cronbach's alpha is 0.3, which is considered very low for an index. However, it is important to note that the approach used to produce the index in this assessment (in accordance with the instructions in README.html) does not follow the official ECDI methodology, which results in a binary measure rather than a continuous one. Nonetheless, since the input variables are the same, these results still provide valuable insight into how the subcomponents of ECDI relate to each other.
+
+The reliability statistics, which show the impact of dropping an item, indicate that the current ECDI is primarily driven by the literacy-numeracy and physical domains. The overall scores of the index would decrease if these items were dropped, highlighting their significance in the index.
+
 ### Quality check: how many observations per month?
 
-In order to make sure our further analysis on addressing the changes in ECDI overe time by month is valid, it makes sense to check the number of observations per month. 
+In order to make sure our further analysis on addressing the changes in ECDI over time by month is valid, it makes sense to check the number of observations per month.
 
 ```{r task2_obs, echo=FALSE, fig.cap="Number of ECDI Observations by Age in Months"}
 ### Distribution of ECDI by Age
 ecdi_obs
 ```
 
-The lowest number of obs is 86 and refers to 51st month, while the highest number of obs is 123 and refers to 43th month. This suggests that the data is sufficient to analyze the changes in ECDI over time by month.
+The lowest number of obs is 84 and refers to 51st month, while the highest number of obs is 123 and refers to 43th month. This suggests that the data is sufficient to analyze the changes in ECDI over time by month.
 
 ### Descriptive exploration: distribution of ECDI and its subcomponents by age in months
 
-The chart below checks the distribution of ECDI score and its main components by age in months. 
-```{r task2_plot, echo=FALSE, fig.cap="Distribution of ECDI and its subcomponents by Age in Months"}
+The chart below checks the distribution of ECDI score and its main components by age in months.
 
-arranged_desc_ecdi <- grid.arrange(p_ecdi, p_litnum, p_physical, p_socemot, p_learn, ncol = 2)
+```{r task2_plot, echo=FALSE, fig.cap="Distribution of ECDI and its subcomponents by Age in Months", fig.height=10, fig.width=8}
+
+arranged_desc_ecdi <- grid.arrange(p_litnum, p_physical, p_socemot, p_learn, p_ecdi, ncol = 2)
 ```
 
-The figure suggests that the changes in ECDI by month, as well as in most of it components, are not very substantial. Moreover, the overlapping 95% confidence intervals suggest that in predominant cases they are not even statistically significant. This may indicate that the ECDI and its components are not sensitive enough to detect small changes in child development over time. However, further research is needed to confirm this hypothesis.
+The figure suggests that the changes in ECDI by month, as well as in most of its components, are not very substantial. Moreover, the overlapping 95% confidence intervals indicate that, in most cases, these changes are not statistically significant. This may imply that the ECDI and its components are not sensitive enough to detect small changes in child development over time. However, further research is needed to confirm this hypothesis.
 
 ### Regression analysis
-We run 5 logit regressions, each predicts ECDI or its 4 subcomponents by age in mobths to see if the changes in time either in index or in one of it's main components are significant over time. The results of the GLM are presented in the table below. 
 
-```{r task2_glm table, echo=FALSE}
+We ran five linear regressions, each predicting ECDI or one of its four subcomponents by age in months, to determine if changes over time in the index or any of its main components are significant. The results of the models are presented in the table below.
 
-gt_glm_table
+```{r task2_lm table, echo=FALSE}
+
+gt_lm_table 
 
 ```
-The table shows that the age has a significant effect on the ECDI and such subcomponents as literacy-numeracy, socio-emotional, and learning. The physical domain, however, does not show a significant relationship with age. However, to understand the magnitude of these changes, logit coefficients are not useful for the interpretation. Instead, based on the built models, predicted probabilities are calculated and visualized.
 
-```{r task2_glm, echo=FALSE, fig.cap="Predicted probabilities of age in months on ECDI and its subcomponents, logit model"}
+The table shows that age has a significant effect on ECDI and all of its subcomponents (though for the physical domain, it is significant at the 10% confidence level). However, the beta coefficients suggest that the magnitude of these changes is rather small, and the changes are not substantial in a practical sense. The highest change is observed in literacy and numeracy (beta = 0.007). This may indicate that ECDI and most of its components are not sensitive enough to detect small changes in child development over time. Given that one month is a short interval to quantify such effects, I visualized the models to better understand the patterns of child development by exploring the slopes over 24 months of children's lives.
+
+```{r task2_lm, echo=FALSE, fig.cap="Effects of age in months on ECDI and its subcomponents, linear model", fig.height=8, fig.width=7}
 
 model_plots <- grid.arrange(grobs = regplots, ncol = 2)
 ```
-The figure suggests that while some significant effects are present, their magnitude is very small, which may indicate that the ECDI and its components are not sensitive enough to detect small changes in child development over time. However, further research is needed to confirm this hypothesis. It needs to be indicated that that the current results are confounded by the lack of such variables as sex of a chilld, wealth quintile, parental education, area of residence, and others which are necessary to control for in the analysis.
+
+The charts confirm that changes over time are indeed not substantial, and the slopes for some of the componts are rather flat, with the exception of Literacy and Numeracy domain. Additionally, the low R-squared coefficients suggest that age does not explain much of the variation in child development.
+
+These findings are indeed somewhat counterintuitive. Better knowledge of socio-economic context is needed to interpret these findings. It needs to be noted that the effect of age in the carried out models is also confounded, as we do not have such important controls as sex, area of residence, parental education, wealth quintile, etc. But in addition to the issues related to the interpretation of the model, the findings could also potentially suggest that the proposed measures may not effectively capture changes in child development over time in terms of their reliability, validity, and other, purely psychometric, properties. This could also be a potential reason why a new measure, ECDI2030, was introduced.

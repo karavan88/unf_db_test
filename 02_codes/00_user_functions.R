@@ -23,6 +23,7 @@ required_packages <- c("readr",
                        "psych",
                        "broom",
                        "gridExtra",
+                       "quarto",
                        "haven")
 
 # Function to check and install packages
@@ -51,14 +52,13 @@ create_plot <- function(data, y_var, y_label) {
     theme_minimal()
 }
 
-run_glm_and_plot <- function(y_var, y_label) {
+run_lm_and_plot <- function(y_var, y_label) {
   # Run the GLM model
-  glm_model <- glm(as.formula(paste(y_var, "~ age_in_months")), 
-                   data = zwe_mics1, 
-                   family = binomial)
+  lm_model <- lm(as.formula(paste(y_var, "~ age_in_months")), 
+                   data = zwe_mics1)
   
   # Generate predictions and plot
-  plot <- plot(ggeffect(glm_model, terms = "age_in_months")) +
+  plot <- plot(ggeffect(lm_model, terms = "age_in_months")) +
     theme_minimal() +
     labs(
       title = "",
@@ -70,17 +70,26 @@ run_glm_and_plot <- function(y_var, y_label) {
   return(plot)
 }
 
-run_glm_and_tidy <- function(y_var) {
+run_lm_and_tidy <- function(y_var) {
   # Run the GLM model
-  glm_model <- glm(as.formula(paste(y_var, "~ age_in_months")), 
-                   data = zwe_mics1, 
-                   family = binomial)
+  lm_model <- lm(as.formula(paste(y_var, "~ age_in_months")), 
+                 data = zwe_mics1)
   
-  # Tidy the model output
-  tidy_output <- tidy(glm_model)
+  # Extract coefficient, standard error, pvalue and R-squared
+  tidy_output <- tidy(lm_model) %>%
+    filter(term == "age_in_months") %>%
+    select(estimate, std.error, p.value) %>%
+    rename(
+      Coefficient = estimate,
+      `Standard Error` = std.error
+    )
   
-  # Add a column for the variable name
+  # Add R-squared and number of observations
+  model_stats <- glance(lm_model) %>%
+    select(r.squared, nobs)
+  
   tidy_output <- tidy_output %>%
+    bind_cols(model_stats) %>%
     mutate(Outcome = y_var)
   
   return(tidy_output)
