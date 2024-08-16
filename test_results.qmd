@@ -10,14 +10,13 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 ```{r wd set up, include=FALSE}
 # !!! THE WD NEEDS TO BE CUSTOMIZED TO LOCAL PATH IN ORDER REPRODUCE THE TEXT 
-#wd = "~/Documents/GitHub/unf_db_test"
-wd = getwd()
+projectFolder = getwd()
 
 ```
 
 ```{r source files, include=FALSE}
-source(file.path(wd,         "user_profile.R"))
-source(file.path(rCodes,     "00_user_functions.R"))
+source(file.path(projectFolder,         "user_profile.R"))
+source(file.path(rCodes,    "00_user_functions.R"))
 source(file.path(codesTask1, "0101_data_prep.R"))
 source(file.path(codesTask1, "0102_data_analysis.R"))
 source(file.path(codesTask1, "0103_data_vis.R"))
