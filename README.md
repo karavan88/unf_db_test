@@ -53,6 +53,7 @@ To run the scripts successfully, follow these steps:
     -   The `run_project.R` allows you to generate the final PDF report. However, you can also have the same output by running `.qmd` file in RStudio. In order to run it in VSCode or other IDE, make sure you have Quarto installed in your environment.
     -   The `.qmd` file in the main directory is used to generate the final report in PDF format. To execute this file, ensure that [Quarto](https://quarto.org/) is installed. In the latest versions of RStudio, Quarto is installed by default.
     -   To generate the report, open the `.qmd` file in RStudio and render it by clicking the "Render" button or by running the following command in the R console: `quarto::quarto_render("test_results.qmd")`
+    -   Sometimes problems with rendering Quarto files may occur to the lack of tinytex. Quarto generates the error in this case and running a simple command in the R terminal (not to confuse with console) will solve the problem. The command is `quarto install tinytex`.
     -   This will produce a PDF document that includes all the analyses and results.
 
 ## License
